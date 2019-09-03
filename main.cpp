@@ -21,7 +21,7 @@ double jump(const double x) {
 int main(){
     int n;
     int N;
-    double dx, y, x, real_y, deviation;
+    double dx, y, y1, x, x1, real_y, deviation;
     double *points;
     vector<double> resolution{0.8,0.4,0.2,0.15,0.1,0.075,0.05,0.04,0.025,0.0125,0.00625};
     cout << "if you want to see solution of problem 2 - press 2" << endl;
@@ -36,8 +36,20 @@ int main(){
                 points[i] = smooth(i * dx);
             }
             x = 2.5 * dx;
+	    x1= 5.5 * dx;
             y = interpolation(x, points, N, dx);
-            cout << y << endl;
+	    y1 = interpolation(x1, points, N, dx);
+            cout <<"interpolation for smooth for x=2.5dx "<< y <<" and 5.5dx " << y1 << endl;
+	    cout << "real numbers are y=-0.41666 for x=2.5dx and y=-0.273529 for x=5.5dx"<<endl;
+	    delete [] points;
+	    points = new double[N];
+            for (int i = 0; i < N; i++) {
+	      points[i] = jump(i * dx);
+            }
+	    y = interpolation(x, points, N, dx);
+            y1 = interpolation(x1, points, N, dx);
+	    cout <<"interpolation for jump for x=2.5dx "<< y <<" and 5.5dx " << y1 << endl;
+	    cout << "real numbers are y=1 for x=2.5dx and y=1 for x=5.5dx"<<endl;
             break;
         case 2:
             N=5;
