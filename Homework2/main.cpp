@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <typeinfo>
+
 using namespace std;
 
 class Mesh{
@@ -46,6 +48,10 @@ public:
 
     DataMesh<T> operator+(const DataMesh<int>& a)
     {
+        if (typeid(a.field) != typeid(this->field)){
+            cout << "they should be the same type of variables" << endl;
+            exit(1);
+        }
         vector<int> size=this->GetSize();
         if (a.field.size() != this->field.size()){
             cout << "a and b should have same size" << endl;
@@ -62,6 +68,10 @@ public:
     DataMesh<T> operator+(const DataMesh<double>& a)
     {
         vector<int> size=this->GetSize();
+        if (typeid(a.field) != typeid(this->field)){
+            cout << "they should be the same type of variables" << endl;
+            exit(1);
+        }
         if (a.field.size() != this->field.size()){
             cout << "a and b should have same size" << endl;
             exit(1);
@@ -76,6 +86,10 @@ public:
 
     DataMesh<T> operator+(const DataMesh<bool>& a)
     {
+        if (typeid(a.field) != typeid(this->field)){
+            cout << "they should be the same type of variables" << endl;
+            exit(1);
+        }
         vector<int> size=this->GetSize();
         if (a.field.size() != this->field.size()){
             cout << "a and b should have same size" << endl;
@@ -90,6 +104,10 @@ public:
     }
 
     void operator += (const DataMesh<int>& b){
+        if (b.field.size() != this->field.size()){
+            cout << "a and b should have same size" << endl;
+            exit(1);
+        }
         if (field.size() != b.field.size()){
             cout << "a and b should have same size" << endl;
             exit(1);
@@ -100,6 +118,10 @@ public:
     }
 
     void operator += (const DataMesh<double>& b){
+        if (b.field.size() != this->field.size()){
+            cout << "a and b should have same size" << endl;
+            exit(1);
+        }
         if (field.size() != b.field.size()){
             cout << "a and b should have same size" << endl;
             exit(1);
@@ -110,6 +132,10 @@ public:
     }
 
     void operator += (const DataMesh<bool>& b){
+        if (b.field.size() != this->field.size()){
+            cout << "a and b should have same size" << endl;
+            exit(1);
+        }
         if (field.size() != b.field.size()){
             cout << "a and b should have same size" << endl;
             exit(1);
