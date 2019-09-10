@@ -43,7 +43,8 @@ public:
         }
     }
     ~DataMesh<T>(){}
-    DataMesh<T> operator+(const DataMesh<T>& a)
+
+    DataMesh<T> operator+(const DataMesh<int>& a)
     {
         vector<int> size=this->GetSize();
         if (a.field.size() != this->field.size()){
@@ -58,7 +59,37 @@ public:
         return c;
     }
 
-    void operator += (const DataMesh<T>& b){
+    DataMesh<T> operator+(const DataMesh<double>& a)
+    {
+        vector<int> size=this->GetSize();
+        if (a.field.size() != this->field.size()){
+            cout << "a and b should have same size" << endl;
+            exit(1);
+        }
+
+        DataMesh<T> c(size);
+        for (int i=0; i<a.field.size(); i++){
+            c.field[i]=a.field[i]+this->field[i];
+        }
+        return c;
+    }
+
+    DataMesh<T> operator+(const DataMesh<bool>& a)
+    {
+        vector<int> size=this->GetSize();
+        if (a.field.size() != this->field.size()){
+            cout << "a and b should have same size" << endl;
+            exit(1);
+        }
+
+        DataMesh<T> c(size);
+        for (int i=0; i<a.field.size(); i++){
+            c.field[i]=a.field[i]+this->field[i];
+        }
+        return c;
+    }
+
+    void operator += (const DataMesh<int>& b){
         if (field.size() != b.field.size()){
             cout << "a and b should have same size" << endl;
             exit(1);
@@ -67,6 +98,27 @@ public:
             field[i]=field[i] +b.field[i];
         }
     }
+
+    void operator += (const DataMesh<double>& b){
+        if (field.size() != b.field.size()){
+            cout << "a and b should have same size" << endl;
+            exit(1);
+        }
+        for (int i=0; i<field.size(); i++){
+            field[i]=field[i] +b.field[i];
+        }
+    }
+
+    void operator += (const DataMesh<bool>& b){
+        if (field.size() != b.field.size()){
+            cout << "a and b should have same size" << endl;
+            exit(1);
+        }
+        for (int i=0; i<field.size(); i++){
+            field[i]=field[i] +b.field[i];
+        }
+    }
+
     void operator * (const double a){
         for (int i=0; i<field.size(); i++){
             field[i]=a*field[i];
