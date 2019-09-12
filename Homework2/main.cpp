@@ -46,12 +46,8 @@ public:
     }
     ~DataMesh<T>(){}
 
-    DataMesh<T> operator+(const DataMesh<int>& a)
+    DataMesh<T> operator+(const DataMesh<T>& a)
     {
-        if (typeid(a.field) != typeid(this->field)){
-            cout << "they should be the same type of variables" << endl;
-            exit(1);
-        }
         vector<int> size=this->GetSize();
         if (a.field.size() != this->field.size()){
             cout << "a and b should have same size" << endl;
@@ -59,93 +55,37 @@ public:
         }
 
         DataMesh<T> c(size);
-        for (int i=0; i<a.field.size(); i++){
-            c.field[i]=a.field[i]+this->field[i];
+        if(typeid(T)== typeid(bool)) {
+            for (int i = 0; i < a.field.size(); i++) {
+                c.field[i] = a.field[i]*this->field[i];
+            }
+        }
+        else{
+            for (int i = 0; i < a.field.size(); i++) {
+                c.field[i] = a.field[i] + this->field[i];
+            }
         }
         return c;
     }
 
-    DataMesh<T> operator+(const DataMesh<double>& a)
-    {
-        vector<int> size=this->GetSize();
-        if (typeid(a.field) != typeid(this->field)){
-            cout << "they should be the same type of variables" << endl;
-            exit(1);
-        }
-        if (a.field.size() != this->field.size()){
-            cout << "a and b should have same size" << endl;
-            exit(1);
-        }
-
-        DataMesh<T> c(size);
-        for (int i=0; i<a.field.size(); i++){
-            c.field[i]=a.field[i]+this->field[i];
-        }
-        return c;
-    }
-
-    DataMesh<T> operator+(const DataMesh<bool>& a)
-    {
-        if (typeid(a.field) != typeid(this->field)){
-            cout << "they should be the same type of variables" << endl;
-            exit(1);
-        }
-        vector<int> size=this->GetSize();
-        if (a.field.size() != this->field.size()){
-            cout << "a and b should have same size" << endl;
-            exit(1);
-        }
-
-        DataMesh<T> c(size);
-        for (int i=0; i<a.field.size(); i++){
-            c.field[i]=a.field[i]+this->field[i];
-        }
-        return c;
-    }
-
-    void operator += (const DataMesh<int>& b){
+    void operator += (const DataMesh<T>& b){
         if (b.field.size() != this->field.size()){
             cout << "a and b should have same size" << endl;
             exit(1);
         }
-        if (field.size() != b.field.size()){
-            cout << "a and b should have same size" << endl;
-            exit(1);
+        if(typeid(T)== typeid(bool)){
+            for (int i = 0; i < field.size(); i++) {
+                field[i] = field[i] * b.field[i];
+            }
         }
-        for (int i=0; i<field.size(); i++){
-            field[i]=field[i] +b.field[i];
-        }
-    }
-
-    void operator += (const DataMesh<double>& b){
-        if (b.field.size() != this->field.size()){
-            cout << "a and b should have same size" << endl;
-            exit(1);
-        }
-        if (field.size() != b.field.size()){
-            cout << "a and b should have same size" << endl;
-            exit(1);
-        }
-        for (int i=0; i<field.size(); i++){
-            field[i]=field[i] +b.field[i];
+        else{
+            for (int i=0; i<field.size(); i++){
+                field[i]=field[i]+b.field[i];
+            }
         }
     }
 
-    void operator += (const DataMesh<bool>& b){
-        if (b.field.size() != this->field.size()){
-            cout << "a and b should have same size" << endl;
-            exit(1);
-        }
-        if (field.size() != b.field.size()){
-            cout << "a and b should have same size" << endl;
-            exit(1);
-        }
-        for (int i=0; i<field.size(); i++){
-            field[i]=field[i] +b.field[i];
-        }
-    }
-
-    void operator * (const double a){
+    void operator * (const T a){
         for (int i=0; i<field.size(); i++){
             field[i]=a*field[i];
         }
@@ -214,6 +154,8 @@ public:
 int main() {
     DataMesh<double> a({2,2,2},1), b({2,2,2},2);
     DataMesh<double> c=a+b;
+/*    DataMesh<bool> a({2,2,2},0), b({2,2,2},0);
+    DataMesh<bool> c=a+b;*/
     cout << "test of +: should be 3 everywhere" << endl;
     c.Print();
     cout << "test of +=: should be 3 everywhere" << endl;
