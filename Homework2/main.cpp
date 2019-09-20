@@ -19,6 +19,7 @@ int main() {
     cout << "list of coordinates" << endl;
     cout << "For the output I assume that the domain is three-dimensional" << endl;
     for (int i=0; i<d.GetNpoints(); i++)
+        //cout << d.GetCoord(i) << endl;
         cout << "i=" << i << " (" << d.GetCoord(i)[0] << " " << d.GetCoord(i)[1] << " " << d.GetCoord(i)[2] << ")" << endl;
     return 0;
 }

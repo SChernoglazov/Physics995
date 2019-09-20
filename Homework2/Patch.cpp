@@ -1,4 +1,5 @@
 #include "hw2.h"
+#include "DataMesh.cpp"
 
 Patch::Patch(vector <int> Size, vector <double> bounds): Mesh(Size){
         lengths = bounds;
@@ -40,8 +41,18 @@ void Patch::ComputeCoords(const int i){ // number of the point
         l=l%StencilSteps[sizes.size()-j];
     }
     reverse(reverse_coords.begin(),reverse_coords.end());
-    coords.push_back(reverse_coords);
+    int dim=reverse_coords.size();
+    DataMesh<double> coordinate({dim});
+    for (int i=0; i<dim; i++){
+        coordinate.SetValue(i,reverse_coords[i]);
+    }
+    coords.push_back(coordinate);
 }
 vector < double> Patch::GetCoord(const int i){
-    return coords[i];
+    int dim = StencilSteps.size();
+    vector<double> result;
+    for (int j=0; j<dim; j++){
+        result.push_back(coords[i].return_element(j));
+    }
+    return result;
 }

@@ -14,6 +14,7 @@ DataMesh<T>::DataMesh(vector <int> Size): Mesh(Size){
             field.push_back(0);
         }
 }
+
 template<typename T>
 DataMesh<T>::~DataMesh(){}
 
@@ -40,6 +41,10 @@ DataMesh<T> DataMesh<T>::operator+(const DataMesh<T>& a)
     return c;
 }
 
+template<typename T>
+void DataMesh<T>::SetValue(const int i, const T& a){
+    field[i]=a;
+}
 template <typename T>
 void DataMesh<T>::operator += (const DataMesh<T>& b){
     if (b.field.size() != this->field.size()){
@@ -63,6 +68,11 @@ void DataMesh<T>::operator * (const T a){
     for (int i=0; i<field.size(); i++){
         field[i]=a*field[i];
     }
+}
+
+template <typename T>
+T DataMesh<T>::return_element(const int i){
+    return field[i];
 }
 
 template <typename T>

@@ -29,14 +29,16 @@ public:
     ~DataMesh<T>();
     DataMesh<T> operator+(const DataMesh<T>& a);
     void operator += (const DataMesh<T>& b);
+    void SetValue(const int i, const T& a);
     void operator * (const T a);
+    T return_element(const int i);
     void Print();
 };
 
 class Patch: public Mesh{
 private:
     vector <double> lengths;
-    vector<vector <double>> coords;
+    vector <DataMesh<double>> coords;
     vector <double> spacing;
     vector <int> StencilSteps;
 public:
@@ -44,7 +46,7 @@ public:
     vector<double> GetBound(void);
     vector<int> GetSteps(void);
     void ComputeCoords(const int i);
-    vector < double> GetCoord(const int i);
+    vector<double> GetCoord(const int i);
 };
 
 #endif //HW2_HW2_H
