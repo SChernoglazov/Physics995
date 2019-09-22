@@ -7,8 +7,6 @@ DataMesh<T>::DataMesh(vector <int> Size, T f): Mesh(Size){
     for (int i=0; i<Npnt; i++){
         field.push_back(f);
     }
-    dt=0.0025;
-    Nsteps=200;
 }
 
 template <typename T>
@@ -17,18 +15,6 @@ DataMesh<T>::DataMesh(vector <int> Size): Mesh(Size){
     for (int i=0; i<Npnt; i++){
         field.push_back(0);
     }
-    dt=0.0025;
-    Nsteps=200;
-}
-
-template <typename T>
-DataMesh<T>::DataMesh(vector <int> Size, const double Courant, const int Nstep): Mesh(Size){
-    int Npnt=GetNpoints();
-    for (int i=0; i<Npnt; i++){
-        field.push_back(0);
-    }
-    dt=Courant;
-    Nsteps=Nstep;
 }
 
 template <typename T>
@@ -93,29 +79,14 @@ void DataMesh<T>::SetElement(const int i, const T value){
 }
 
 template <typename T>
+T DataMesh<T>::GetElement (const int i){
+    return field[i];
+}
+
+template <typename T>
 void DataMesh<T>::Print(){
     for (int i=0; i<field.size(); i++){
         cout << "i=" << i << ", value=" << field[i] << endl;
     }
 }
 
-template <typename T>
-void DataMesh<T>::EvolveField(){
-    int Npnt=GetNpoints();
-    vector<int> size=this->GetSize();
-    ComputeRHS<T> der(size, dt);
-    for (int j=0; j<=Nsteps; j++) {
-        if (j%40000 ==0) {
-            cout << "N = "<< j << endl;
-            cout << "{";
-            for (int i = 0; i < Npnt-1; i++)
-                cout << " "<<field[i] <<",";
-            cout << " "<<field[Npnt-1];
-            cout << "}" << endl;
-        };
-        vector<T> derivative = der.UpstreamDerivative1st(field);
-        for (int i = 0; i < Npnt; i++) {
-            field[i] += derivative[i];
-        }
-    }
-}

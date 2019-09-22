@@ -21,9 +21,11 @@ Patch::Patch(vector <int> Size, vector <double> bounds): Mesh(Size){
         ComputeCoords(i);
     }
 }
+
 vector<double> Patch::GetBound(){
     return lengths;
 }
+
 vector<int> Patch::GetSteps(){
     return StencilSteps;
 }
@@ -47,6 +49,7 @@ void Patch::ComputeCoords(const int i){ // number of the point
     reverse(reverse_coords.begin(),reverse_coords.end());
     coords.push_back(reverse_coords);
 }
+
 vector < double> Patch::GetCoord(const int i){
     return coords[i];
 }

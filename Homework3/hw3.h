@@ -7,7 +7,7 @@
 #include <typeinfo>
 #include <math.h>
 
-#define PI 3.141592654
+#define PI 3.141592653589793
 using namespace std;
 
 class Mesh{
@@ -39,34 +39,32 @@ private:
 template <typename T> class DataMesh: public Mesh{
 private:
     vector <T> field;
-    double dt;
-    int Nsteps;
 public:
     DataMesh<T>(vector <int> Size, T f);
-    DataMesh(vector <int> Size, const double Courant, const int Nstep);
     DataMesh<T>(vector <int> Size);
     ~DataMesh<T>(void);
     DataMesh<T> operator+(const DataMesh<T>& a);
     void operator += (const DataMesh<T>& b);
     void operator * (const T a);
     void SetElement (const int i, const T value);
-    void EvolveField(void);
+    T GetElement (const int i);
     void Print(void);
 };
 
+
 template <typename T> class ComputeRHS{
 private:
-    double dt;
     int Npnts;
-    vector <int> StencilSteps;
-    vector <int> Sizes;
     vector <T> derivative;
+    vector <int> StencilSteps;
 public:
-    ComputeRHS<T>(vector <int> Size, const double Courant);
-    ComputeRHS<T>(vector <int> Size);
-    vector<T> CenteredDerivative1st (const vector <T>& field);
-    vector<T> DownstreamDerivative1st (const vector<T>& field);
-    vector<T> UpstreamDerivative1st (const vector<T>& field);
+    ComputeRHS(vector<int> N);
+    void UpstreamDerivative( DataMesh<T>& U, const double dt, DataMesh<T>& dtU);
+    void DownstreamDerivative( DataMesh<T>& U, const double dt, DataMesh<T>& dtU);
+    void CenteredDerivative( DataMesh<T>& U, const double dt, DataMesh<T>& dtU);
+    void RungeKutta3 (DataMesh<T>& U, const double dt, DataMesh<T>& dtU);
+    T ThirdDerivative(DataMesh<T>& U, const int i);
+    T ThirdDerivative(vector<T>& U, const int i);
 };
 
 

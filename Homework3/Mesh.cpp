@@ -15,6 +15,7 @@ int Mesh::GetDim(){
 vector <int> Mesh::GetSize(){
     return size;
 }
+
 int Mesh::GetNpoints(){
     return Npnts;
 }
