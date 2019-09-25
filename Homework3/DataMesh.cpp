@@ -51,12 +51,12 @@ void DataMesh<T>::operator +=(const DataMesh<T>& b){
     }
     if(typeid(T)== typeid(bool)){
         for (int i = 0; i < field.size(); i++) {
-            field[i] = field[i] * b.field[i];
+            this->field[i] = this->field[i] * b.field[i];
         }
     }
     else{
         for (int i=0; i<field.size(); i++){
-            field[i]=field[i]+b.field[i];
+            this->field[i]=this->field[i]+b.field[i];
         }
     }
 }

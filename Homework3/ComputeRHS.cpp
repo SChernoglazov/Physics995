@@ -73,7 +73,7 @@ void ComputeRHS<T>::RungeKutta3 (DataMesh<T>& U, const double dt, DataMesh<T>& d
     }
     for (int i=0; i<Npnts; i++) {
         k3[i] = ThirdDerivative(helper1, i);
-        dtU.SetElement(i, dt*(b1 * k1[i] + b2 * k2[i] * b3 * k3[i]));
+        dtU.SetElement(i, dt*(b1 * k1[i] + b2 * k2[i] + b3 * k3[i]));
     }
 }
 
