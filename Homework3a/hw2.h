@@ -73,13 +73,24 @@ template <typename T> class ComputeRHS{
   vector <int> StencilSteps;
   vector<int> Sizes;
  public:
-  ComputeRHS(vector<int> N, int GhostZone);
-  void RungeKutta3 (DataMesh<T>& U, const double dt, DataMesh<T>& dtU, DataMesh<bool>& GZ, GhostZoneMover& GZM);
-  void UpstreamDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dtU, DataMesh<bool>& GZ, GhostZoneMover& GZM);
-  void DownstreamDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dtU, DataMesh<bool>& GZ, GhostZoneMover& GZM);
-  void CenteredDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dtU, DataMesh<bool>& GZ, GhostZoneMover& GZM);
+  ComputeRHS();
+  void FillComputeRHS(vector<int> N, int GhostZone);
   T ThirdDerivative(DataMesh<T>& U, const int i, DataMesh<bool>& GZ);
   T ThirdDerivative(vector<T>& U, const int i, DataMesh<bool>& GZ);
+};
+
+template <typename T> class  dtU{
+private:
+  int Npnts, GhostZones;
+  vector <int> StencilSteps;
+  vector<int> Sizes;
+  ComputeRHS<T> RHS;
+public:
+  dtU(vector <int> Size, int GhostZone);
+  void RungeKutta3(DataMesh<T>& U, const double dt, DataMesh<T>& dUt, DataMesh<bool>& GZ, GhostZoneMover& GZM);
+  void UpstreamDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dUt, DataMesh<bool>& GZ, GhostZoneMover& GZM);
+  void DownstreamDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dUt, DataMesh<bool>& GZ, GhostZoneMover& GZM);
+  void CenteredDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dUt, DataMesh<bool>& GZ, GhostZoneMover& GZM);
 };
 
 #endif //HW2_HW2_H
