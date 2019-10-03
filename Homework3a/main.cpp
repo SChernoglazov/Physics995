@@ -3,7 +3,7 @@
 #include "dtU.cpp"
 
 int main() {
-  int N = 200;
+  int N = 1600;
   double Courant = 0.1;
   int Nsteps=N, GhostZone=2;
   double value;
@@ -17,7 +17,6 @@ int main() {
     U.SetValue(i, value);
   }
   GZM.PeriodicGZ(GZ, U);
-  cout <<"{";
   cout.precision(16);
   for (int j=0; j<=Nsteps; j++) {
     if(j%(Nsteps)==0) {

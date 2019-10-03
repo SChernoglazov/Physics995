@@ -58,7 +58,7 @@ public:
 
 class GhostZoneMover{
 private:
-  int dim, Npnts;
+  int dim, Npnts, GhostZones;
   vector<int> InternalSize;
   vector<int> StencilSteps;
 public:
