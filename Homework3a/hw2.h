@@ -61,10 +61,12 @@ private:
   int dim, Npnts, GhostZones;
   vector<int> InternalSize;
   vector<int> StencilSteps;
+  vector<vector<int>> map;
 public:
   GhostZoneMover(vector<int> Size, int GhostZone);
-  void PeriodicGZ(DataMesh<bool>& GZ, DataMesh<double>& field);
-  void PeriodicGZ(DataMesh<bool>& GZ, vector<double>& field);
+  void GeneratePeriodicGZ(DataMesh<bool>& GZ, DataMesh<double>& field);
+  void ApplyBCs(DataMesh<double>& field);
+  void ApplyBCs(vector<double>& field);
 };
 
 template <typename T> class ComputeRHS{

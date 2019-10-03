@@ -32,16 +32,16 @@ void dtU<T>::RungeKutta3 (DataMesh<T>& U, const double dt, DataMesh<T>& dUt, Dat
     k1[i]=RHS.ThirdDerivative(U, i, GZ);
     helper[i]=U.return_element(i) + dt*a21*k1[i];
   }
-  GZM.PeriodicGZ(GZ, helper);
+  GZM.ApplyBCs(helper);
   for (int i=0; i<Npnts; i++){
     k2[i]=RHS.ThirdDerivative(helper, i, GZ);
     helper1[i]=U.return_element(i)+dt*(a31*k1[i]+a32*k2[i]);
   }
-  GZM.PeriodicGZ(GZ,helper1);
+  GZM.ApplyBCs(helper1);
   for (int i=0; i<Npnts; i++) {
     k3[i] = RHS.ThirdDerivative(helper1, i, GZ);
   }
-  GZM.PeriodicGZ(GZ,k3);
+  GZM.ApplyBCs(k3);
   for (int i=0; i<Npnts; i++){
     dUt.SetValue(i, dt*(b1 * k1[i] + b2 * k2[i] + b3 * k3[i]));
   }
@@ -58,7 +58,7 @@ void dtU<T>::UpstreamDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dU
       dUt.SetValue(i,result);
     }
   }
-  GZM.PeriodicGZ(GZ, dUt);
+  GZM.ApplyBCs(dUt);
 }
 
 template <typename T>
@@ -72,7 +72,7 @@ void dtU<T>::DownstreamDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& 
       dUt.SetValue(i,result);
     }
   }
-  GZM.PeriodicGZ(GZ, dUt);
+  GZM.ApplyBCs(dUt);
 }
 
 template <typename T>
@@ -86,5 +86,5 @@ void dtU<T>::CenteredDerivative(DataMesh<T>& U, const double dt, DataMesh<T>& dU
       dUt.SetValue(i,result);
     }
   }
-  GZM.PeriodicGZ(GZ, dUt);
+  GZM.ApplyBCs(dUt);
 }

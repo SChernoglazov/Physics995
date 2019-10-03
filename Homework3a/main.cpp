@@ -3,7 +3,7 @@
 #include "dtU.cpp"
 
 int main() {
-  int N = 1600;
+  int N = 200;
   double Courant = 0.1;
   int Nsteps=N, GhostZone=2;
   double value;
@@ -16,7 +16,8 @@ int main() {
     value=sin(2*PI*double(i-GhostZone)/(N));
     U.SetValue(i, value);
   }
-  GZM.PeriodicGZ(GZ, U);
+  GZM.GeneratePeriodicGZ(GZ, U);
+  GZM.ApplyBCs(U);
   cout.precision(16);
   for (int j=0; j<=Nsteps; j++) {
     if(j%(Nsteps)==0) {
@@ -26,12 +27,12 @@ int main() {
 	cout << U.return_element(i) <<", ";
       cout << U.return_element(N+3) <<"}" << endl;
     }
-    der.UpstreamDerivative(U, Courant, dUt,GZ,GZM);
+    //der.UpstreamDerivative(U, Courant, dUt,GZ,GZM);
     //der.DownstreamDerivative(U, Courant, dUt,GZ,GZM);
     //der.CenteredDerivative(U, Courant, dUt,GZ,GZM);
-    //der.RungeKutta3(U, Courant, dUt, GZ, GZM);
+    der.RungeKutta3(U, Courant, dUt, GZ, GZM);
     U+=dUt;
-    GZM.PeriodicGZ(GZ, U);
+    GZM.ApplyBCs(U);
   }
   return 0;
 }
