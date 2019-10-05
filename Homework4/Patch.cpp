@@ -1,4 +1,4 @@
-#include "hw2.h"
+#include "hw.h"
 #include "DataMesh.cpp"
 
 Patch::Patch(const vector <int> Size, const vector <double> bounds): Mesh(Size){

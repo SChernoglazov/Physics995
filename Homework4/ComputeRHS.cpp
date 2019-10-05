@@ -1,4 +1,4 @@
-#include "hw2.h"
+#include "hw.h"
 
 template <typename T>
 ComputeRHS<T>::ComputeRHS(){}

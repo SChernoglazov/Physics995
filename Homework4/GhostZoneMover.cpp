@@ -1,4 +1,4 @@
-#include "hw2.h"
+#include "hw.h"
 #include "DataMesh.cpp"
 
 GhostZoneMover::GhostZoneMover(const vector<int> Size, const int GhostZone){ 
