@@ -3,9 +3,9 @@
 #include "ComputeRHS.cpp"
 
 int main() {
-    int N = 1600;
+    int N = 200;
     double Courant = 0.1;
-    int Nsteps=N;
+    int Nsteps=2000;
     double value;
     DataMesh<double> U({N}), dtU({N});
     ComputeRHS<double> der({N});

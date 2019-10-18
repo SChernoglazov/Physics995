@@ -39,7 +39,6 @@ Patch::Patch(const vector <int> Size, const vector <double> bounds, const int Gh
       step*=(Size[k]+2*GhostZone);
     StencilSteps.push_back(step);
   }
-  cout << StencilSteps[0] << " " << StencilSteps[1] << " " << StencilSteps[2] << endl;
   int Npnts=GetNpoints();
   for (int i=0; i<Npnts; i++){
     ComputeCoords(i, GhostZone);
