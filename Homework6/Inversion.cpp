@@ -95,11 +95,13 @@ public:
       if (count > 50){
 	Wfound=-1;
 	Tfound=-1;
-	cout << "solution doesn't converge" << endl;
+	cout << "Newton method  doesn't converge" << endl;
+	cout << "call for bisection method" << endl;
       }
     }
     Wfound=Wg;
     Tfound=Tg;
+    findW();
   }
 
   void findW (){
@@ -170,10 +172,12 @@ public:
     }
   }
   
-  vector<double> MakeInversion(){
+  vector<double> MakeInversion(double Winit, double Tinit){
     auto t1 = std::chrono::high_resolution_clock::now();
+    /*if want to use bisection method only call
+     findW() function instead of findWT(Winit, Tinit)*/
     //findW();
-    findWT(2,0.0005);
+    findWT(Winit, Tinit);
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
     std::cout << "duration is " << duration << " ms" <<endl;
@@ -199,10 +203,14 @@ int main(){
   double RhoSt = RhoStar(Detg, W, Rho0);
   double tau = Tau(Detg, W, Rho0, T);
   vector <double> S_k= Sk(Rho0, T, W, Detg, u_i);
+
+
   /* if you wanna check the bisection method for 
      the temperature evaluation - change last argument to 0*/
-  Inversion A(RhoSt, tau, S_k, 0);
-  vector<double> WT=A.MakeInversion();
+  Inversion A(RhoSt, tau, S_k, 1);
+  vector<double> WT=A.MakeInversion(2, 0.0005);
+
+
   if ((WT[0]>=1)&&(WT[1]>=0)){
       cout << " we found W=" << WT[0] << " T=" << WT[1] << endl;
   } else{
