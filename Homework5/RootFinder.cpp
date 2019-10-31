@@ -16,12 +16,16 @@ double Newtonian (double (*fun)(double x), double initial, double precision){
   x1 = x - fun(x)/df;
   error = x1 - x;
   x=x1;
+  int count=0;
   while (abs(error) > precision){
     x1 = x - fun(x)/df;
     df = (fun(x+dx)-fun(x-dx))/dx;
     d2f = (fun(x-dx)+fun(x+dx) - 2*fun(x))/(2*dx);
     error = x1 - x;
     x=x1;
+    count++;
+    if (cout >= 50)
+      return -1;
   }
   return x; 
 }
