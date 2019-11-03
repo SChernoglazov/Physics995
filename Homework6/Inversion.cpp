@@ -4,7 +4,7 @@
 #include <chrono>
 using namespace std;
 
-int FLAG = 0; // if you want to test convergence for bisection method, FLAG should be 1
+int FLAG = 1; // if you want to test convergence for bisection method, FLAG should be 1
 
 double Pres(double T, double Rho0){
   return 100*Rho0*Rho0+Rho0*T;
@@ -230,7 +230,7 @@ int main(){
     } else{
       cout << "inversion was failed" << endl;
     }
-    if (fabs(WT[0]-W)>3*1e-16 && fabs(WT[1]-T)>3*1e-16)
+    if (fabs(WT[0]-W)>3*1e-12 && fabs(WT[1]-T)>3*1e-12)
       failed++;
     cout << endl;
   }
