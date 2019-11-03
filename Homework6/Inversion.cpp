@@ -4,7 +4,7 @@
 #include <chrono>
 using namespace std;
 
-int FLAG = 1; // if want to test convergence for bisection method, FLAG should be 1
+int FLAG = 0; // if you want to test convergence for bisection method, FLAG should be 1
 
 double Pres(double T, double Rho0){
   return 100*Rho0*Rho0+Rho0*T;
@@ -202,6 +202,7 @@ int main(){
   double Detg=1, Rho0=0.0001, T=0.0002;
   vector <double> u_i (1);
   double u;
+  int failed=0;
   for (int i=0; i<100; i++){
     Rho0 = pow(10,-12.0+(double)rand()*9.0/(double)RAND_MAX);
     T =  pow(10,-5+(double)rand()*3.0/(double)RAND_MAX);
@@ -229,7 +230,10 @@ int main(){
     } else{
       cout << "inversion was failed" << endl;
     }
+    if (fabs(WT[0]-W)>3*1e-16 && fabs(WT[1]-T)>3*1e-16)
+      failed++;
     cout << endl;
   }
+  cout << "failed " << failed << " tests out of 100" << endl;
   return 0;
 }
