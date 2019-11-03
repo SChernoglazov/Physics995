@@ -4,6 +4,8 @@
 #include <chrono>
 using namespace std;
 
+int FLAG = 1; // if want to test convergence for bisection method, FLAG should be 1
+
 double Pres(double T, double Rho0){
   return 100*Rho0*Rho0+Rho0*T;
 }
@@ -92,16 +94,20 @@ public:
       Wg = Wg + errorW;
       Tg = Tg + errorT;
       count++;
-      if (count > 50){
+      if (count > 200){
 	Wfound=-1;
 	Tfound=-1;
 	cout << "Newton method  doesn't converge" << endl;
 	cout << "call for bisection method" << endl;
+	break;
       }
     }
     Wfound=Wg;
     Tfound=Tg;
-    findW();
+    /* the next line of the code calls bisection method if Newton method fails 
+       to find roots. Now I commented it out in order to test convergence of 
+       Newton method only*/
+    //    findW();
   }
 
   void findW (){
@@ -176,8 +182,10 @@ public:
     auto t1 = std::chrono::high_resolution_clock::now();
     /*if want to use bisection method only call
      findW() function instead of findWT(Winit, Tinit)*/
-    //findW();
-    findWT(Winit, Tinit);
+    if (FLAG==1)
+      findW();
+    if (FLAG==0)
+      findWT(Winit, Tinit);
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
     std::cout << "duration is " << duration << " ms" <<endl;
@@ -192,29 +200,36 @@ public:
 int main(){
   //the primitive variables we need to recover
   double Detg=1, Rho0=0.0001, T=0.0002;
-  vector <double> u_i= {0.7,0.1};
-  //computation of conservative variables
-  double W=1;
-  for (int i=0; i<u_i.size(); i++)
-    W+=u_i[i]*u_i[i];
-  W=sqrt(W);
-  cout.precision(16);
-  cout << "exact W = " <<W << " T= " << T << endl;
-  double RhoSt = RhoStar(Detg, W, Rho0);
-  double tau = Tau(Detg, W, Rho0, T);
-  vector <double> S_k= Sk(Rho0, T, W, Detg, u_i);
-
-
-  /* if you wanna check the bisection method for 
-     the temperature evaluation - change last argument to 0*/
-  Inversion A(RhoSt, tau, S_k, 1);
-  vector<double> WT=A.MakeInversion(2, 0.0005);
-
-
-  if ((WT[0]>=1)&&(WT[1]>=0)){
+  vector <double> u_i (1);
+  double u;
+  for (int i=0; i<100; i++){
+    Rho0 = pow(10,-12.0+(double)rand()*9.0/(double)RAND_MAX);
+    T =  pow(10,-5+(double)rand()*3.0/(double)RAND_MAX);
+    u_i[0] = pow(10, -5+(double)rand()*8.0/(double)RAND_MAX);
+    //computation of conservative variables
+    double W=1;
+    for (int i=0; i<u_i.size(); i++)
+      W+=u_i[i]*u_i[i];
+    W=sqrt(W);
+    cout.precision(16);
+    cout << "exact W = " <<W << " T= " << T << endl;
+    double RhoSt = RhoStar(Detg, W, Rho0);
+    double tau = Tau(Detg, W, Rho0, T);
+    vector <double> S_k= Sk(Rho0, T, W, Detg, u_i);
+    
+    /* if you want to check the bisection method for 
+     the temperature evaluation - change last argument to 0,
+     if last argument = 1 - use analytical solution for T for 
+     given W*/
+    Inversion A(RhoSt, tau, S_k, 0);
+    vector<double> WT=A.MakeInversion(2*W, 0.5*T);
+    
+    if ((WT[0]>=1)&&(WT[1]>=0)){
       cout << " we found W=" << WT[0] << " T=" << WT[1] << endl;
-  } else{
-    cout << "inversion was failed" << endl;
+    } else{
+      cout << "inversion was failed" << endl;
+    }
+    cout << endl;
   }
   return 0;
 }
