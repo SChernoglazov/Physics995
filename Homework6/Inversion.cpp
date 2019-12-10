@@ -107,7 +107,7 @@ public:
     /* the next line of the code calls bisection method if Newton method fails 
        to find roots. Now I commented it out in order to test convergence of 
        Newton method only*/
-    //    findW();
+    findW();
   }
 
   void findW (){
@@ -146,8 +146,8 @@ public:
   
   double findT(double W){
     double c;
-    double a=-1.0;
-    double b=1.;
+    double a=-100.0;
+    double b=100.;
     int count =0;
     if (!polynomial){
       if(Equation2(W, a)*Equation2(W, b)>0)
@@ -203,6 +203,7 @@ int main(){
   vector <double> u_i (1);
   double u;
   int failed=0;
+  cout << asin(1) << endl;
   for (int i=0; i<100; i++){
     Rho0 = pow(10,-12.0+(double)rand()*9.0/(double)RAND_MAX);
     T =  pow(10,-5+(double)rand()*3.0/(double)RAND_MAX);
@@ -222,7 +223,7 @@ int main(){
      the temperature evaluation - change last argument to 0,
      if last argument = 1 - use analytical solution for T for 
      given W*/
-    Inversion A(RhoSt, tau, S_k, 0);
+    Inversion A(RhoSt, tau, S_k, 1);
     vector<double> WT=A.MakeInversion(2*W, 0.5*T);
     
     if ((WT[0]>=1)&&(WT[1]>=0)){
